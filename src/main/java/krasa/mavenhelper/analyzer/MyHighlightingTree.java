@@ -41,10 +41,10 @@ public class MyHighlightingTree extends Tree implements DataProvider {
 		if (object instanceof MyTreeUserObject) {
 			if (((MyTreeUserObject) object).isHighlight()) {
 				ApplicationSettings state = MavenHelperApplicationService.getInstance().getState();
-				if (UIUtil.isUnderDarcula()) {
-					return darker(new JBColor(new Color(state.getSearchBackgroundColor()), new Color(state.getSearchBackgroundColor())), 8);
-				} else {
+				if (JBColor.isBright()) {
 					return softer(new JBColor(new Color(state.getSearchBackgroundColor()), new Color(state.getSearchBackgroundColor())));
+				} else {
+					return darker(new JBColor(new Color(state.getSearchBackgroundColor()), new Color(state.getSearchBackgroundColor())), 8);
 				}
 			}
 		}

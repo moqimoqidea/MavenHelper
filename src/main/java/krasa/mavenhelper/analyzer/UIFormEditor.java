@@ -10,8 +10,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenProject;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +30,8 @@ public final class UIFormEditor extends UserDataHolderBase implements /* Navigat
 	private final VirtualFile file;
 	private GuiForm myEditor;
 
-	public UIFormEditor(@NotNull Project project, final VirtualFile file) {
+	public UIFormEditor(@NotNull Project project, final VirtualFile file, @Nullable MavenProject mavenProject) {
 		this.file = file;
-		final MavenProject mavenProject = MavenProjectsManager.getInstance(project).findProject(file);
 		if (mavenProject != null) {
 			myEditor = new GuiForm(project, file, mavenProject);
 		} else {

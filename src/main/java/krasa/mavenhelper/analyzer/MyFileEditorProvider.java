@@ -34,7 +34,10 @@ public class MyFileEditorProvider implements FileEditorProvider, DumbAware {
 		if (!isPotentialPomFile(name)) return false;
 
 		MavenProjectsManager instance = MavenProjectsManager.getInstance(project);
-		final MavenProject mavenProject = instance == null ? null : instance.findProject(file);
+		// Guard against calling findProject() before the project tree is initialized, as that triggers
+		// doInitTree() which asserts no read access and throws a PluginException when called from a read action.
+		if (instance == null || !instance.isMavenizedProject()) return false;
+		final MavenProject mavenProject = instance.findProject(file);
 		if (mavenProject != null) {
 			return mavenProject.getFile().equals(file);
 		}
@@ -52,7 +55,9 @@ public class MyFileEditorProvider implements FileEditorProvider, DumbAware {
 //		https://github.com/krasa/MavenHelper/issues/130
 //		LOG.assertTrue(accept(project, file));
 
-		return new UIFormEditor(project, file);
+		MavenProjectsManager instance = MavenProjectsManager.getInstance(project);
+		MavenProject mavenProject = (instance != null && instance.isMavenizedProject()) ? instance.findProject(file) : null;
+		return new UIFormEditor(project, file, mavenProject);
 	}
 
 	@Override
