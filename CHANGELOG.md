@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- compatibility with 2026.1
+
 ## [4.30.0-IJ2022.2] - 2025-06-05
 
 - exception fix
